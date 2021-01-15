@@ -7,9 +7,13 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @author = Author.create!(author_params)
-
-    redirect_to author_path(@author)
+    author = Author.create(author_params)
+    if author.valid?
+      redirect_to author_path(author)
+    else
+      flash[:messages] = author.errors.full_messages
+      render :new
+    end
   end
 
   private
